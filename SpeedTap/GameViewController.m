@@ -45,7 +45,7 @@
     
     // Create Tap button
     self.myButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 60.0)];
-    [self.myButton setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:0.25]];
+    [self.myButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.15]];
     [self.myButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.buttonCenter = CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect)-25);
     [self.myButton setCenter:self.buttonCenter];
@@ -55,7 +55,6 @@
     self.myButton.layer.cornerRadius = self.myButton.frame.size.height / 2.0f;
     self.myButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.myButton.layer.borderWidth = 2.0f;
-    
     [self.view addSubview:self.myButton];
     
     // Tap counter
@@ -87,7 +86,7 @@
     [self.timerLabel setTextColor:[UIColor whiteColor]];
     [self.timerLabel setAlpha:0.5];
     [self.timerLabel setBackgroundColor:[UIColor clearColor]];
-    [self.timerLabel setText:[NSString stringWithFormat:@"%i.00", self.gameBrain.secondsLeft]];
+    [self.timerLabel setText:[NSString stringWithFormat:@"%i.00\"", self.gameBrain.secondsLeft]];
     [self.view addSubview:self.timerLabel];
     
     // Create Continue button
@@ -96,6 +95,7 @@
     //[self.continueButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     self.continueButton.center = CGPointMake(mainRect.size.width / 2.0, mainRect.size.height - 50);
     // Transform button appearance
+    [self.continueButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.15]];
     self.continueButton.clipsToBounds = YES;
     self.continueButton.layer.cornerRadius = self.continueButton.frame.size.height / 4.0f;
     self.continueButton.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -108,6 +108,7 @@
     //[self.continueButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     self.pauseButton.center = CGPointMake(mainRect.size.width - 50, 50);
     // Transform button appearance
+    [self.pauseButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.15]];
     self.pauseButton.clipsToBounds = YES;
     self.pauseButton.layer.cornerRadius = self.pauseButton.frame.size.height / 4.0f;
     self.pauseButton.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -137,7 +138,7 @@
         // Reset goal tap number label
         [self.goalTapLabel setText:[NSString stringWithFormat:@"GOAL: %i", self.gameBrain.goalTapNum]];
         // Reset timer label
-        [self.timerLabel setText:[NSString stringWithFormat:@"%i.00", self.gameBrain.secondsLeft]];
+        [self.timerLabel setText:[NSString stringWithFormat:@"%i.00\"", self.gameBrain.secondsLeft]];
     }];
     NSLog(@"Reset the game view for level %i", self.gameBrain.level);
 }
@@ -174,7 +175,7 @@
 -(void) updateTimer
 {
     [self.gameBrain decrementTime];
-    [self.timerLabel setText:[NSString stringWithFormat:(self.gameBrain.centisecondsLeft < 10 ? @"%i.%i0" : @"%i.%i"),
+    [self.timerLabel setText:[NSString stringWithFormat:(self.gameBrain.centisecondsLeft < 10 ? @"%i.%i0\"" : @"%i.%i\""),
                               self.gameBrain.secondsLeft, self.gameBrain.centisecondsLeft]];
     
     if (self.gameBrain.gameState == win || self.gameBrain.gameState == lose)
@@ -186,13 +187,15 @@
     [self.timer invalidate];
     self.timer = nil;
     [self.pauseButton removeFromSuperview];
+    [self.continueButton setCenter:CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 100)];
     
     NSString *buttonText = [[NSString alloc] init];
     if (self.gameBrain.gameState == win) {
         buttonText = [NSString stringWithFormat:@"Level %i", self.gameBrain.level + 1];
     }
-    else
-        buttonText = @"Retry";
+    else {
+        buttonText = @"Try Again";
+    }
     [self.continueButton setTitle: buttonText forState:UIControlStateNormal];
     
     self.tvc = [[TransitionalScreenViewController alloc] init];
@@ -225,7 +228,8 @@
     NSLog(@"Pressed pause button.");
     [self.pauseButton removeFromSuperview];
     [self.gameBrain pauseGame];
-    [self.continueButton setTitle:@"Unpause" forState:UIControlStateNormal];
+    [self.continueButton setTitle:@"Resume" forState:UIControlStateNormal];
+    [self.continueButton setCenter:CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 40)];
     self.pgvc = [[PauseGameViewController alloc] init];
     [self.pgvc.view addSubview:self.continueButton];
     [self.view addSubview:self.pgvc.view];

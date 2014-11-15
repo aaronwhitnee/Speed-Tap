@@ -25,15 +25,15 @@
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
     self.gameBrain = [[GameBrain alloc] init];
 
-    // Create Label for Current Level
+    // Create title label for Pause screen
     self.pauseLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
-    [self.pauseLabel setCenter:CGPointMake(CGRectGetMidX(frame), 50)];
+    [self.pauseLabel setCenter:CGPointMake(frame.size.width / 2, frame.size.height / 2)];
     [self.pauseLabel setTextAlignment:NSTextAlignmentCenter];
     [self.pauseLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:40.0f]];
     [self.pauseLabel setTextColor:[UIColor whiteColor]];
     //[self.levelLabel setAlpha:0.5];
     [self.pauseLabel setBackgroundColor:[UIColor clearColor]];
-    [self.pauseLabel setText:[NSString stringWithFormat:@"Level %i", self.gameBrain.level]];
+    [self.pauseLabel setText:@"Game Paused"];
     [self.view addSubview:self.pauseLabel];
 }
 
