@@ -20,38 +20,24 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+    //[super viewDidLoad];
     
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
     self.gameBrain = [[GameBrain alloc] init];
+
+    [self.view setBackgroundColor:[UIColor clearColor]];
 
     // Create title label for Pause screen
     self.pauseLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
     [self.pauseLabel setCenter:CGPointMake(frame.size.width / 2, frame.size.height / 2)];
     [self.pauseLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.pauseLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:40.0f]];
+    [self.pauseLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:40.0f]];
     [self.pauseLabel setTextColor:[UIColor whiteColor]];
-    //[self.levelLabel setAlpha:0.5];
-    [self.pauseLabel setBackgroundColor:[UIColor clearColor]];
+    //[self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:0.8]];
+    //[self setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:0.25]];
+    //[self.pauseLabel setBackgroundColor:[UIColor clearColor]];
     [self.pauseLabel setText:@"Game Paused"];
     [self.view addSubview:self.pauseLabel];
 }
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

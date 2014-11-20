@@ -45,6 +45,19 @@
     self.gameState = running;
 }
 
+-(void) restartGame
+{
+    self.currentTapCount = 0;
+    self.levelScore = 0;
+    self.totalScore = 0;
+    self.level = 1;
+    self.goalTapNum = 5;
+    self.levelTimeLimit = 5;
+    self.secondsLeft = self.levelTimeLimit;
+    self.centisecondsLeft = 0;
+    self.gameState = waiting;
+}
+
 -(void) pauseGame
 {
     self.gameState = waiting;
@@ -78,20 +91,21 @@
 -(void) decrementTime
 {
     // Decremend centiseconds first, and then seconds
-    if (self.gameState == running) {
-    if (self.centisecondsLeft == 0)
+    if (self.gameState == running)
     {
-        if (self.secondsLeft == 0) {
-            self.gameState = lose;
+        if (self.centisecondsLeft == 0)
+        {
+            if (self.secondsLeft == 0) {
+                self.gameState = lose;
+            }
+            else {
+                self.secondsLeft--;
+                self.centisecondsLeft = 99;
+            }
         }
         else {
-            self.secondsLeft--;
-            self.centisecondsLeft = 99;
+            self.centisecondsLeft--;
         }
-    }
-    else {
-        self.centisecondsLeft--;
-    }
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0B4A531A1D195D00F08CA6 /* Pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C0B4A521A1D195D00F08CA6 /* Pause.png */; };
 		0C2D9ED51A0C77820051ECE1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2D9ED41A0C77820051ECE1 /* main.m */; };
 		0C2D9ED81A0C77820051ECE1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2D9ED71A0C77820051ECE1 /* AppDelegate.m */; };
 		0C2D9EDB1A0C77820051ECE1 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2D9EDA1A0C77820051ECE1 /* ViewController.m */; };
@@ -18,6 +19,9 @@
 		0C2D9EFD1A0C78300051ECE1 /* GameBrain.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2D9EFC1A0C78300051ECE1 /* GameBrain.m */; };
 		0C2D9F001A0C79850051ECE1 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2D9EFF1A0C79850051ECE1 /* GameViewController.m */; };
 		0C2D9F031A0C8D330051ECE1 /* GameInstructionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2D9F021A0C8D330051ECE1 /* GameInstructionsViewController.m */; };
+		0C35E8591A1A7683006ED621 /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C35E8581A1A7683006ED621 /* Home.png */; };
+		0CABC1A31A1DB5F100829632 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CABC1A21A1DB5F100829632 /* FXBlurView.m */; };
+		0CABC1A51A1DB68600829632 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CABC1A41A1DB68600829632 /* Accelerate.framework */; };
 		3F46C9311A113A80009E0757 /* TransitionalScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46C9301A113A80009E0757 /* TransitionalScreenViewController.m */; };
 		3F54B3D21A13E987002A2724 /* PauseGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F54B3D11A13E987002A2724 /* PauseGameViewController.m */; };
 /* End PBXBuildFile section */
@@ -33,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C0B4A521A1D195D00F08CA6 /* Pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pause.png; sourceTree = "<group>"; };
 		0C2D9ECF1A0C77820051ECE1 /* SpeedTap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpeedTap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C2D9ED31A0C77820051ECE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C2D9ED41A0C77820051ECE1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -54,6 +59,10 @@
 		0C2D9EFF1A0C79850051ECE1 /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
 		0C2D9F011A0C8D330051ECE1 /* GameInstructionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInstructionsViewController.h; sourceTree = "<group>"; };
 		0C2D9F021A0C8D330051ECE1 /* GameInstructionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameInstructionsViewController.m; sourceTree = "<group>"; };
+		0C35E8581A1A7683006ED621 /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
+		0CABC1A11A1DB5F100829632 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		0CABC1A21A1DB5F100829632 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
+		0CABC1A41A1DB68600829632 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		3F46C92F1A113A80009E0757 /* TransitionalScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionalScreenViewController.h; sourceTree = "<group>"; };
 		3F46C9301A113A80009E0757 /* TransitionalScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionalScreenViewController.m; sourceTree = "<group>"; };
 		3F54B3D01A13E987002A2724 /* PauseGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseGameViewController.h; sourceTree = "<group>"; };
@@ -65,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CABC1A51A1DB68600829632 /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +91,7 @@
 		0C2D9EC61A0C77820051ECE1 = {
 			isa = PBXGroup;
 			children = (
+				0CABC1A41A1DB68600829632 /* Accelerate.framework */,
 				0C2D9ED11A0C77820051ECE1 /* SpeedTap */,
 				0C2D9EEB1A0C77820051ECE1 /* SpeedTapTests */,
 				0C2D9ED01A0C77820051ECE1 /* Products */,
@@ -126,6 +137,9 @@
 		0C2D9ED21A0C77820051ECE1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0CABC1A01A1DB5F100829632 /* FXBlurView */,
+				0C0B4A521A1D195D00F08CA6 /* Pause.png */,
+				0C35E8581A1A7683006ED621 /* Home.png */,
 				0C2D9ED31A0C77820051ECE1 /* Info.plist */,
 				0C2D9ED41A0C77820051ECE1 /* main.m */,
 			);
@@ -147,6 +161,15 @@
 				0C2D9EED1A0C77820051ECE1 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0CABC1A01A1DB5F100829632 /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				0CABC1A11A1DB5F100829632 /* FXBlurView.h */,
+				0CABC1A21A1DB5F100829632 /* FXBlurView.m */,
+			);
+			path = FXBlurView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,9 +252,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C35E8591A1A7683006ED621 /* Home.png in Resources */,
 				0C2D9EDE1A0C77820051ECE1 /* Main.storyboard in Resources */,
 				0C2D9EE31A0C77820051ECE1 /* LaunchScreen.xib in Resources */,
 				0C2D9EE01A0C77820051ECE1 /* Images.xcassets in Resources */,
+				0C0B4A531A1D195D00F08CA6 /* Pause.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +281,7 @@
 				0C2D9ED51A0C77820051ECE1 /* main.m in Sources */,
 				3F46C9311A113A80009E0757 /* TransitionalScreenViewController.m in Sources */,
 				0C2D9EFD1A0C78300051ECE1 /* GameBrain.m in Sources */,
+				0CABC1A31A1DB5F100829632 /* FXBlurView.m in Sources */,
 				0C2D9F001A0C79850051ECE1 /* GameViewController.m in Sources */,
 				0C2D9EFA1A0C77E30051ECE1 /* HomeViewController.m in Sources */,
 			);

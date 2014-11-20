@@ -26,6 +26,7 @@
 @property(atomic) int centisecondsLeft;
 
 -(void) startGame;
+-(void) restartGame;
 -(void) pauseGame;
 -(void) startNextLevel;
 -(void) retryCurrentLevel;

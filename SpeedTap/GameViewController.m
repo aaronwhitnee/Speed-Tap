@@ -10,9 +10,9 @@
 #import "GameBrain.h"
 #import "TransitionalScreenViewController.h"
 #import "PauseGameViewController.h"
+#import "FXBlurView.h"
 
 @interface GameViewController () {
-    //enum {win = 0, lose, running, waiting};
 }
 
 @property(strong, nonatomic) NSArray *pointsArray;
@@ -20,6 +20,8 @@
 @property(nonatomic) NSTimer *timer;
 @property(nonatomic) UIButton *continueButton;
 @property(nonatomic) UIButton *pauseButton;
+@property(nonatomic) UIButton *homeButton;
+@property(nonatomic) FXBlurView *blurredView;
 @property(nonatomic) TransitionalScreenViewController *tvc;
 @property(nonatomic) PauseGameViewController *pgvc;
 
@@ -38,30 +40,33 @@
     
     CGRect mainRect = [[UIScreen mainScreen] applicationFrame];
     
-    [self.view setBackgroundColor:[UIColor blackColor]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:1.0]];
     
     // Initialize the game
     self.gameBrain = [GameBrain sharedInstance];
     
     // Create Tap button
-    self.myButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 60.0)];
-    [self.myButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.15]];
-    [self.myButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.tapButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 60.0)];
+    [self.tapButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.25]];
+    [self.tapButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.buttonCenter = CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect)-25);
-    [self.myButton setCenter:self.buttonCenter];
-    [self.myButton setTitle:@"Tap" forState:UIControlStateNormal];
+    [self.tapButton setCenter:self.buttonCenter];
+    [self.tapButton.titleLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
+    [self.tapButton setTitle:@"Tap" forState:UIControlStateNormal];
     // Transform button into a circle
-    self.myButton.clipsToBounds = YES;
-    self.myButton.layer.cornerRadius = self.myButton.frame.size.height / 2.0f;
-    self.myButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.myButton.layer.borderWidth = 2.0f;
-    [self.view addSubview:self.myButton];
+    self.tapButton.clipsToBounds = YES;
+    self.tapButton.layer.cornerRadius = self.tapButton.frame.size.height / 2.0f;
+    /*
+    self.tapButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.tapButton.layer.borderWidth = 2.0f;
+     */
+    [self.view addSubview:self.tapButton];
     
     // Tap counter
     self.tapCounterLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, mainRect.size.width, 150)];
     [self.tapCounterLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect)-25)];
     [self.tapCounterLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.tapCounterLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:100.0f]];
+    [self.tapCounterLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:100.0f]];
     [self.tapCounterLabel setTextColor:[UIColor whiteColor]];
     [self.tapCounterLabel setAlpha:0.5];
     [self.tapCounterLabel setBackgroundColor:[UIColor clearColor]];
@@ -69,9 +74,9 @@
     
     // Goal tap number
     self.goalTapLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, mainRect.size.width, 150)];
-    [self.goalTapLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect)+200)];
+    [self.goalTapLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect) + 220)];
     [self.goalTapLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.goalTapLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:20.0f]];
+    [self.goalTapLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:30.0f]];
     [self.goalTapLabel setTextColor:[UIColor whiteColor]];
     [self.goalTapLabel setAlpha:0.5];
     [self.goalTapLabel setBackgroundColor:[UIColor clearColor]];
@@ -80,9 +85,9 @@
     
     // Timer label
     self.timerLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, mainRect.size.width, 150)];
-    [self.timerLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), 50)];
+    [self.timerLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), 100)];
     [self.timerLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.timerLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:20.0f]];
+    [self.timerLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:30.0f]];
     [self.timerLabel setTextColor:[UIColor whiteColor]];
     [self.timerLabel setAlpha:0.5];
     [self.timerLabel setBackgroundColor:[UIColor clearColor]];
@@ -95,31 +100,55 @@
     //[self.continueButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     self.continueButton.center = CGPointMake(mainRect.size.width / 2.0, mainRect.size.height - 50);
     // Transform button appearance
-    [self.continueButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.15]];
+    [self.continueButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.25]];
     self.continueButton.clipsToBounds = YES;
     self.continueButton.layer.cornerRadius = self.continueButton.frame.size.height / 4.0f;
-    self.continueButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.continueButton.layer.borderWidth = 2.0f;
+    [self.continueButton.titleLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
+//    self.continueButton.layer.borderColor = [UIColor whiteColor].CGColor;
+//    self.continueButton.layer.borderWidth = 2.0f;
     [self.continueButton addTarget:self action:@selector(didPressContinueButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    // Create Pause button
-    self.pauseButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 60, 25)];
+    // Create Pause button (displayed on pause screen)
+    self.pauseButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 40, 40)];
     [self.pauseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //[self.continueButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     self.pauseButton.center = CGPointMake(mainRect.size.width - 50, 50);
     // Transform button appearance
-    [self.pauseButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.15]];
+    [self.pauseButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.25]];
     self.pauseButton.clipsToBounds = YES;
-    self.pauseButton.layer.cornerRadius = self.pauseButton.frame.size.height / 4.0f;
-    self.pauseButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.pauseButton.layer.borderWidth = 2.0f;
+    self.pauseButton.layer.cornerRadius = self.pauseButton.frame.size.height / 2.0f;
+//    self.pauseButton.layer.borderColor = [UIColor whiteColor].CGColor;
+//    self.pauseButton.layer.borderWidth = 2.0f;
     [self.pauseButton setAlpha:0.75];
-    [self.pauseButton setTitle:@"Pause" forState:UIControlStateNormal];
-    [self.pauseButton.titleLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:15.0f]];
+    [self.pauseButton setImage:[UIImage imageNamed:@"Pause.png"] forState:UIControlStateNormal];
     [self.pauseButton addTarget:self action:@selector(didPressPauseButton:) forControlEvents:UIControlEventTouchUpInside];
     
+    // Create Home button (displayed on pause screen)
+    self.homeButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 40, 40)];
+    [self.homeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    //[self.continueButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    self.homeButton.center = CGPointMake(50, 50);
+    // Transform button appearance
+    [self.homeButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.25]];
+    self.homeButton.clipsToBounds = YES;
+    self.homeButton.layer.cornerRadius = self.homeButton.frame.size.height / 2.0f;
+//    self.homeButton.layer.borderColor = [UIColor whiteColor].CGColor;
+//    self.homeButton.layer.borderWidth = 2.0f;
+    [self.homeButton setAlpha:0.75];
+    [self.homeButton setImage:[UIImage imageNamed:@"Home.png"] forState:UIControlStateNormal];
+    [self.homeButton addTarget:self action:@selector(didPressHomeButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Prepare FXBlurView for blurred background behind PauseGameViewController and TransitionalScreenViewController
+    self.blurredView = [[FXBlurView alloc] initWithFrame:mainRect];
+    [self.blurredView setTintColor:[UIColor clearColor]];
+    [self.blurredView setBlurRadius:15.0];
+    
+    // Prepare TransitionalScreenViewController and PauseGameViewController
+    self.tvc = [[TransitionalScreenViewController alloc] init];
+    self.pgvc = [[PauseGameViewController alloc] init];
+    
     // Call myButtonPressed on button tap
-    [self.myButton addTarget:self action:@selector(myButtonPressed:)
+    [self.tapButton addTarget:self action:@selector(myButtonPressed:)
             forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -129,10 +158,10 @@
 
     // Reset game view with quick animation
     [UIView animateWithDuration:0.5 animations:^{
-        // Reset background to black
-        [self.view setBackgroundColor:[UIColor blackColor]];
+        // Reset background color
+        [self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:1.0]];
         // Move Tap button back to center of screen
-        [self.myButton setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect)-25)];
+        [self.tapButton setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect)-25)];
         // Reset tap counter label
         [self.tapCounterLabel setText:@""];
         // Reset goal tap number label
@@ -175,7 +204,7 @@
 -(void) updateTimer
 {
     [self.gameBrain decrementTime];
-    [self.timerLabel setText:[NSString stringWithFormat:(self.gameBrain.centisecondsLeft < 10 ? @"%i.%i0\"" : @"%i.%i\""),
+    [self.timerLabel setText:[NSString stringWithFormat:(self.gameBrain.centisecondsLeft < 10 ? @"%i.0%i\"" : @"%i.%i\""),
                               self.gameBrain.secondsLeft, self.gameBrain.centisecondsLeft]];
     
     if (self.gameBrain.gameState == win || self.gameBrain.gameState == lose)
@@ -198,8 +227,8 @@
     }
     [self.continueButton setTitle: buttonText forState:UIControlStateNormal];
     
-    self.tvc = [[TransitionalScreenViewController alloc] init];
     [self.tvc.view addSubview:self.continueButton];
+    [self.view addSubview:self.blurredView];
     [self.view addSubview:self.tvc.view];
 }
 
@@ -210,16 +239,19 @@
         [self.gameBrain startNextLevel];
         [self resetGameView];
         [self.tvc.view removeFromSuperview];
+        [self.blurredView removeFromSuperview];
     }
     else if(self.gameBrain.gameState == lose) {
         [self.gameBrain retryCurrentLevel];
         [self resetGameView];
         [self.tvc.view removeFromSuperview];
+        [self.blurredView removeFromSuperview];
     }
     else if(self.gameBrain.gameState == waiting){
         [self.gameBrain startGame];
         [self.view addSubview:self.pauseButton];
         [self.pgvc.view removeFromSuperview];
+        [self.blurredView removeFromSuperview];
     }
 }
 
@@ -230,9 +262,23 @@
     [self.gameBrain pauseGame];
     [self.continueButton setTitle:@"Resume" forState:UIControlStateNormal];
     [self.continueButton setCenter:CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 40)];
-    self.pgvc = [[PauseGameViewController alloc] init];
-    [self.pgvc.view addSubview:self.continueButton];
+    
+    [self.view addSubview:self.blurredView];
     [self.view addSubview:self.pgvc.view];
+    
+    [self.pgvc.view addSubview:self.continueButton];
+    [self.pgvc.view addSubview:self.homeButton];
+    [self.view addSubview:self.pgvc.view];
+}
+
+-(void) didPressHomeButton: (UIButton *) selector
+{
+    NSLog(@"Pressed home button.");
+    [self.pauseButton removeFromSuperview];
+    [self.timer invalidate];
+    self.timer = nil;
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.gameBrain restartGame];
 }
 
 -(void) generateRandomBackgroundColor
@@ -270,14 +316,14 @@
      
      int highestX = mainRect.size.width;
      int highestY = mainRect.size.height;
-     int xPadding = (self.myButton.frame.size.width / 2) + 10;
-     int yPadding = (self.myButton.frame.size.height / 2) + 10;
+     int xPadding = (self.tapButton.frame.size.width / 2) + 10;
+     int yPadding = (self.tapButton.frame.size.height / 2) + 10;
      
      randPoint.x = xPadding + arc4random_uniform(highestX - (2 * xPadding));
      randPoint.y = yPadding + arc4random_uniform(highestY - (2 * yPadding));
      
      self.buttonCenter = randPoint;
-     [self.myButton setCenter:self.buttonCenter];
+     [self.tapButton setCenter:self.buttonCenter];
      */
     
     // Using fixed points on grid (points in pointsArray)
@@ -290,7 +336,7 @@
         gridPoint = [value CGPointValue];
     }
     self.buttonCenter = gridPoint;
-    [self.myButton setCenter:self.buttonCenter];
+    [self.tapButton setCenter:self.buttonCenter];
 }
 
 -(void) updateTapCounter

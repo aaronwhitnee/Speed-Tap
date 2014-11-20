@@ -32,13 +32,13 @@
     
     self.gameBrain = [GameBrain sharedInstance];
 
-    [self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:0.8]];
+    //[self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:0.8]];
     
     // Create Label for Current Level
     self.levelLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
     [self.levelLabel setCenter:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame) / 2 - 20)];
     [self.levelLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.levelLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:40.0f]];
+    [self.levelLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:40.0f]];
     [self.levelLabel setTextColor:[UIColor whiteColor]];
     //[self.levelLabel setAlpha:0.5];
     [self.levelLabel setBackgroundColor:[UIColor clearColor]];
@@ -49,7 +49,7 @@
     self.winLoseLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
     [self.winLoseLabel setCenter:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(self.levelLabel.frame) + 50)];
     [self.winLoseLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.winLoseLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:60.0f]];
+    [self.winLoseLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:60.0f]];
     [self.winLoseLabel setTextColor:[UIColor whiteColor]];
     //[self.winLoseLabel setAlpha:0.5];
     [self.winLoseLabel setBackgroundColor:[UIColor clearColor]];
@@ -64,7 +64,7 @@
     self.levelScoreLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
     [self.levelScoreLabel setCenter:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(self.winLoseLabel.frame) + 60)];
     [self.levelScoreLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.levelScoreLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:40.0f]];
+    [self.levelScoreLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:40.0f]];
     [self.levelScoreLabel setTextColor:[UIColor whiteColor]];
     //[self.levelScoreLabel setAlpha:0.5];
     [self.levelScoreLabel setBackgroundColor:[UIColor clearColor]];
@@ -75,7 +75,7 @@
     self.totalScoreLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
     [self.totalScoreLabel setCenter:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(self.levelScoreLabel.frame) + 80)];
     [self.totalScoreLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.totalScoreLabel setFont:[UIFont fontWithName:@"Futura-CondensedExtraBold" size:20.0f]];
+    [self.totalScoreLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
     [self.totalScoreLabel setTextColor:[UIColor whiteColor]];
     //[self.levelScoreLabel setAlpha:0.5];
     [self.totalScoreLabel setBackgroundColor:[UIColor clearColor]];

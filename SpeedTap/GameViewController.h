@@ -10,7 +10,7 @@
 
 @interface GameViewController : UIViewController
 
-@property(strong, nonatomic) UIButton *myButton;
+@property(strong, nonatomic) UIButton *tapButton;
 @property(nonatomic) CGPoint buttonCenter;
 @property(strong, nonatomic) UILabel *tapCounterLabel;
 @property(nonatomic) UILabel *timerLabel;

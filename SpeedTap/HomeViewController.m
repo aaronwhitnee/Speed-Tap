@@ -25,32 +25,41 @@
     
     CGRect frame = [[UIScreen mainScreen] applicationFrame];
 
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    // Set Home Screen Background Color
+    [self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:1.0]];
     
     // Create Start button
     self.startGameButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 200, 40)];
+    [self.startGameButton.titleLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
     [self.startGameButton setTitle: @"Start" forState:UIControlStateNormal];
-    [self.startGameButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.startGameButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.startGameButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.25]];
     //[self.startGameButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     self.startGameButton.center = CGPointMake(frame.size.width / 2.0, frame.size.height / 2.0 + 30);
     // Transform button appearance
     self.startGameButton.clipsToBounds = YES;
     self.startGameButton.layer.cornerRadius = self.startGameButton.frame.size.height / 4.0f;
-    self.startGameButton.layer.borderColor = [UIColor blackColor].CGColor;
+    /*
+    self.startGameButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.startGameButton.layer.borderWidth = 2.0f;
+     */
     [self.view addSubview:self.startGameButton];
     
     // Create How to Play button
     self.howToPlayButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 200, 40)];
+    [self.howToPlayButton.titleLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
     [self.howToPlayButton setTitle: @"How To Play" forState:UIControlStateNormal];
-    [self.howToPlayButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.howToPlayButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.howToPlayButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.25]];
     //[self.howToPlayButton setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
     self.howToPlayButton.center = CGPointMake(frame.size.width / 2.0, self.startGameButton.frame.origin.y + 80);
     // Transform button appearance
     self.howToPlayButton.clipsToBounds = YES;
     self.howToPlayButton.layer.cornerRadius = self.howToPlayButton.frame.size.height / 4.0f;
-    self.howToPlayButton.layer.borderColor = [UIColor blackColor].CGColor;
+    /*
+    self.howToPlayButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.howToPlayButton.layer.borderWidth = 2.0f;
+     */
     [self.view addSubview:self.howToPlayButton];
     
     // Add actions to home screen buttons
