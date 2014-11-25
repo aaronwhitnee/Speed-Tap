@@ -21,6 +21,8 @@
 @property(nonatomic) UIButton *continueButton;
 @property(nonatomic) UIButton *pauseButton;
 @property(nonatomic) UIButton *homeButton;
+@property(nonatomic) NSMutableArray *lifeHearts;
+@property(nonatomic) UIView *lifeHeartsContainerView;
 @property(nonatomic) FXBlurView *blurredView;
 @property(nonatomic) TransitionalScreenViewController *tvc;
 @property(nonatomic) PauseGameViewController *pgvc;
@@ -74,7 +76,7 @@
     
     // Goal tap number
     self.goalTapLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, mainRect.size.width, 150)];
-    [self.goalTapLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect) + 220)];
+    [self.goalTapLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect) + 250)];
     [self.goalTapLabel setTextAlignment:NSTextAlignmentCenter];
     [self.goalTapLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:30.0f]];
     [self.goalTapLabel setTextColor:[UIColor whiteColor]];
@@ -85,7 +87,7 @@
     
     // Timer label
     self.timerLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, mainRect.size.width, 150)];
-    [self.timerLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), 100)];
+    [self.timerLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), 80)];
     [self.timerLabel setTextAlignment:NSTextAlignmentCenter];
     [self.timerLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:30.0f]];
     [self.timerLabel setTextColor:[UIColor whiteColor]];
@@ -101,7 +103,7 @@
     self.continueButton.center = CGPointMake(mainRect.size.width / 2.0, mainRect.size.height - 50);
     // Transform button appearance
     [self.continueButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.25]];
-    self.continueButton.clipsToBounds = YES;
+    [self.continueButton setClipsToBounds:YES];
     self.continueButton.layer.cornerRadius = self.continueButton.frame.size.height / 4.0f;
     [self.continueButton.titleLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
 //    self.continueButton.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -138,14 +140,28 @@
     [self.homeButton setImage:[UIImage imageNamed:@"Home.png"] forState:UIControlStateNormal];
     [self.homeButton addTarget:self action:@selector(didPressHomeButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    // Prepare FXBlurView for blurred background behind PauseGameViewController and TransitionalScreenViewController
+    // Prepare FXBlurView for blurred effect behind PauseGameViewController and TransitionalScreenViewController
     self.blurredView = [[FXBlurView alloc] initWithFrame:mainRect];
     [self.blurredView setTintColor:[UIColor clearColor]];
     [self.blurredView setBlurRadius:15.0];
     
-    // Prepare TransitionalScreenViewController and PauseGameViewController
-    self.tvc = [[TransitionalScreenViewController alloc] init];
+    // Prepare PauseGameViewController
     self.pgvc = [[PauseGameViewController alloc] init];
+    
+    // Create array of 3 lifeHearts, used to display 3 hearts on game screen as "lives"
+    self.lifeHeartsContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 108.0, 30.0)];
+    CGRect containerFrame = self.lifeHeartsContainerView.frame;
+    for (int i = 0; i < 3; i++)
+    {
+        UIImageView *heart = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"heart.png"]];
+        [heart setAlpha:0.5];
+        [heart setFrame:CGRectMake(0, 0, 18.0, 18.0)];
+        heart.center = CGPointMake(18 + i * (containerFrame.size.width / 3), containerFrame.size.height / 2);
+        self.lifeHearts[i] = heart;
+        [self.lifeHeartsContainerView addSubview:heart];
+    }
+    [self.lifeHeartsContainerView setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(self.goalTapLabel.frame) + 40)];
+    [self.view addSubview:self.lifeHeartsContainerView];
     
     // Call myButtonPressed on button tap
     [self.tapButton addTarget:self action:@selector(myButtonPressed:)
@@ -155,45 +171,43 @@
 -(void) resetGameView
 {
     CGRect mainRect = [[UIScreen mainScreen] applicationFrame];
-
+    
     // Reset game view with quick animation
     [UIView animateWithDuration:0.5 animations:^{
-        // Reset background color
+        // Reset background color; recenter Tap Button; reset labels
         [self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:1.0]];
-        // Move Tap button back to center of screen
         [self.tapButton setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect)-25)];
-        // Reset tap counter label
         [self.tapCounterLabel setText:@""];
-        // Reset goal tap number label
         [self.goalTapLabel setText:[NSString stringWithFormat:@"GOAL: %i", self.gameBrain.goalTapNum]];
-        // Reset timer label
         [self.timerLabel setText:[NSString stringWithFormat:@"%i.00\"", self.gameBrain.secondsLeft]];
+        // Need to set number of opaque Hearts to self.gameBrain.livesLeft
     }];
     NSLog(@"Reset the game view for level %i", self.gameBrain.level);
 }
 
 - (void) myButtonPressed:(UIButton *) sender
 {
-    // Start game if button is pressed for the first time
+    // Start game if the button is pressed for the first time
     if (self.gameBrain.gameState == waiting) {
         [self.gameBrain startGame];
         [self.view addSubview:self.pauseButton];
-        // Start the Timer with 1/100th (centisecond) accuracy... because it's more exciting
+        // Start the Timer with 1/100th (centisecond) accuracy... because it's more exciting than just seconds
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.01 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
     }
     
     // Update game brain's tap counter and the tap counter label
     [self updateTapCounter];
     
-    // Call random color generator to change background color
-    [UIView animateWithDuration:0.5 animations:^{
-        [self generateRandomBackgroundColor];
-    }];
-    
-    // Call random CGPoint generator to move button to new random position
-    [UIView animateWithDuration:0.1 animations:^{
-        [self moveButtonRandomly];
-    }];
+    // Animations disabled on final (winning) tap for performance
+    if (self.gameBrain.gameState != win) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [self generateRandomBackgroundColor];
+        }];
+        // Move button to new random position
+        [UIView animateWithDuration:0.1 animations:^{
+            [self moveButtonRandomly];
+        }];
+    }
     
     // Checking if game has been won by reaching goal tap count
     if (self.gameBrain.gameState == win) {
@@ -213,6 +227,8 @@
 
 -(void) presentTransitionalViewController
 {
+    NSLog(@"Lives remaining: %i", self.gameBrain.livesLeft);
+
     [self.timer invalidate];
     self.timer = nil;
     [self.pauseButton removeFromSuperview];
@@ -227,6 +243,8 @@
     }
     [self.continueButton setTitle: buttonText forState:UIControlStateNormal];
     
+    self.tvc = [[TransitionalScreenViewController alloc] init];
+    [self.tvc.view addSubview:self.homeButton];
     [self.tvc.view addSubview:self.continueButton];
     [self.view addSubview:self.blurredView];
     [self.view addSubview:self.tvc.view];
@@ -246,8 +264,11 @@
         [self resetGameView];
         [self.tvc.view removeFromSuperview];
         [self.blurredView removeFromSuperview];
+        if (self.gameBrain.livesLeft == 0) {
+            // present transitional view controller with Game Over
+        }
     }
-    else if(self.gameBrain.gameState == waiting){
+    else if(self.gameBrain.gameState == waiting) {
         [self.gameBrain startGame];
         [self.view addSubview:self.pauseButton];
         [self.pgvc.view removeFromSuperview];
@@ -284,25 +305,22 @@
 -(void) generateRandomBackgroundColor
 {
     srand((int)time(NULL));
-
+    
     CGFloat red = (rand() / (float) RAND_MAX) * 0.5 + 0.3;
     CGFloat green = (rand() / (float) RAND_MAX) * 0.5 + 0.3;
     CGFloat blue = (rand() / (float) RAND_MAX) * 0.5 + 0.3;
-    /*
-    while (red > 0.8 || red < 0.3) {
-        red = rand() / (float) RAND_MAX;
-    }
-    while (green > 0.8 || green < 0.3) {
-        green = rand() / (float) RAND_MAX;
-    }
-    while (blue > 0.8 || blue < 0.3) {
-        blue = rand() / (float) RAND_MAX;
-    }
-     */
     
     NSLog(@"R:%f, G:%f, B:%f", red, green, blue);
     
+    // Ensures that no two consecutive colors are the same
     UIColor *randomColor = [UIColor colorWithRed:(red) green:(green) blue:(blue) alpha:(1.0)];
+    while ([randomColor isEqual:self.view.backgroundColor]) {
+        red = (rand() / (float) RAND_MAX) * 0.5 + 0.3;
+        green = (rand() / (float) RAND_MAX) * 0.5 + 0.3;
+        blue = (rand() / (float) RAND_MAX) * 0.5 + 0.3;
+        randomColor = [UIColor colorWithRed:(red) green:(green) blue:(blue) alpha:(1.0)];
+    }
+    
     [self.view setBackgroundColor:randomColor];
     //NSLog(@"Generated color: %@", randomColor);
 }
@@ -342,6 +360,15 @@
 -(void) updateTapCounter
 {
     [self.gameBrain incrementTapCount];
+    
+    // Add "Pulse" animation to Tap Counter when button is tapped
+    CABasicAnimation *pulse = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    [pulse setDuration: 0.03];
+    [pulse setAutoreverses: YES];
+    [pulse setFromValue:[NSNumber numberWithFloat: 1.0]];
+    [pulse setToValue:[NSNumber numberWithFloat: 1.3]];
+    [self.tapCounterLabel.layer addAnimation:pulse forKey:@"animateLayer"];
+    
     [self.tapCounterLabel setText:[NSString stringWithFormat:@"%i", self.gameBrain.currentTapCount]];
 }
 

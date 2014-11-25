@@ -14,11 +14,18 @@
 @property(nonatomic) UILabel *winLoseLabel;
 @property(nonatomic) UILabel *levelLabel;
 @property(nonatomic) UILabel *levelScoreLabel;
+@property(nonatomic) UILabel *remainingTimeLabel;
 @property(nonatomic) UILabel *totalScoreLabel;
+@property(nonatomic) NSString *timeString;
+@property(nonatomic) NSString *totalScoreString;
 @property(nonatomic) GameBrain *gameBrain;
+@property(nonatomic) NSTimer *timer;
 
 @property(atomic) int levelNum;
-@property(atomic) int score;
+@property(atomic) int seconds;
+@property(atomic) int centiseconds;
+@property(atomic) int totalScore;
+
 
 @end
 
@@ -71,22 +78,72 @@
     [self.levelScoreLabel setText:[NSString stringWithFormat:@"%i/%i Taps", self.gameBrain.levelScore, self.gameBrain.goalTapNum]];
     [self.view addSubview:self.levelScoreLabel];
     
+    // Create Label for Ramaining Time
+    self.remainingTimeLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
+    [self.remainingTimeLabel setCenter:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(self.levelScoreLabel.frame) + 60)];
+    [self.remainingTimeLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.remainingTimeLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
+    [self.remainingTimeLabel setTextColor:[UIColor whiteColor]];
+    [self.remainingTimeLabel setBackgroundColor:[UIColor clearColor]];
+    self.timeString = [NSString stringWithFormat:(self.gameBrain.centisecondsLeft < 10 ? @"%i.0%i\"" : @"%i.%i\""),
+                            self.gameBrain.secondsLeft, self.gameBrain.centisecondsLeft];
+    [self.remainingTimeLabel setText:[NSString stringWithFormat:@"Time Remaining: %@", self.timeString]];
+    [self.view addSubview:self.remainingTimeLabel];
+    
     // Create Label for Total Score
     self.totalScoreLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 80)];
-    [self.totalScoreLabel setCenter:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(self.levelScoreLabel.frame) + 80)];
+    [self.totalScoreLabel setCenter:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(self.remainingTimeLabel.frame) + 40)];
     [self.totalScoreLabel setTextAlignment:NSTextAlignmentCenter];
     [self.totalScoreLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
     [self.totalScoreLabel setTextColor:[UIColor whiteColor]];
     //[self.levelScoreLabel setAlpha:0.5];
     [self.totalScoreLabel setBackgroundColor:[UIColor clearColor]];
-    NSString *totalScoreString;
     if (self.gameBrain.gameState == win) {
-        totalScoreString = [NSString stringWithFormat:@"Total Score: %i", self.gameBrain.totalScore + self.gameBrain.levelScore];
+        self.totalScoreString = [NSString stringWithFormat:@"Score: %i", self.gameBrain.totalScore];
     }
     else
-        totalScoreString = @"C'mon, you can go faster!";
-    [self.totalScoreLabel setText:totalScoreString];
+        self.totalScoreString = @"You gotta move a little faster!";
+    [self.totalScoreLabel setText:self.totalScoreString];
     [self.view addSubview:self.totalScoreLabel];
+    
+    self.seconds = self.gameBrain.secondsLeft;
+    self.centiseconds = self.gameBrain.centisecondsLeft;
+    self.totalScore = self.gameBrain.totalScore + 1;
+    
+    NSLog(@"Total calculated in view controller: %i", self.centiseconds + (100 * self.seconds));
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(incrementTotalScoreAnimated) userInfo:nil repeats:YES];
+    [self.timer setTolerance:0.05];
+}
+
+-(void) incrementTotalScoreAnimated
+{
+    // For every 1 centisecond left, add 1 to total score
+    if (self.centiseconds == 0)
+    {
+        if (self.seconds == 0) {
+            [self.timer invalidate];
+            self.timer = nil;
+        }
+        else
+        {
+            self.seconds--;
+            self.centiseconds = 99;
+            self.timeString = [NSString stringWithFormat:(self.centiseconds < 10 ? @"%i.0%i\"" : @"%i.%i\""),
+                                self.seconds, self.centiseconds];
+            [self.remainingTimeLabel setText:[NSString stringWithFormat:@"Time Remaining: %@", self.timeString]];
+            self.totalScoreString = [NSString stringWithFormat:@"Score: %i", self.totalScore++];
+            [self.totalScoreLabel setText:self.totalScoreString];
+        }
+    }
+    else {
+        self.centiseconds--;
+        self.timeString = [NSString stringWithFormat:(self.centiseconds < 10 ? @"%i.0%i\"" : @"%i.%i\""),
+                            self.seconds, self.centiseconds];
+        [self.remainingTimeLabel setText:[NSString stringWithFormat:@"Time Remaining: %@", self.timeString]];
+        self.totalScoreString = [NSString stringWithFormat:@"Score: %i", self.totalScore++];
+        [self.totalScoreLabel setText:self.totalScoreString];
+    }
 }
 
 - (void)didReceiveMemoryWarning

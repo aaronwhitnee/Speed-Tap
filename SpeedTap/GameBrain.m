@@ -27,6 +27,7 @@
         return nil;
     
     [self generatePointsInRect];
+    self.livesLeft = 3;
     self.currentTapCount = 0;
     self.levelScore = 0;
     self.totalScore = 0;
@@ -47,6 +48,7 @@
 
 -(void) restartGame
 {
+    self.livesLeft = 3;
     self.currentTapCount = 0;
     self.levelScore = 0;
     self.totalScore = 0;
@@ -76,9 +78,10 @@
 -(void) startNextLevel
 {
     self.level++;
-    self.totalScore += self.levelScore;
+    self.totalScore += (self.centisecondsLeft + (self.secondsLeft * 100));
+    NSLog(@"New total score: %i", self.totalScore);
     self.goalTapNum += 2;
-    self.levelTimeLimit += 1;
+    self.levelTimeLimit += self.level / 3;
     
     self.levelScore = 0;
     self.currentTapCount = 0;
@@ -97,6 +100,7 @@
         {
             if (self.secondsLeft == 0) {
                 self.gameState = lose;
+                self.livesLeft--;
             }
             else {
                 self.secondsLeft--;

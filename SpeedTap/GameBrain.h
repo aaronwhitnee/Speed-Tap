@@ -13,9 +13,9 @@
 
 +(GameBrain *) sharedInstance;
 
-@property(strong, nonatomic) NSArray *pointsArray;
 @property(atomic) enum state {win = 0, lose, running, waiting};
 @property(atomic) enum state gameState;
+@property(strong, nonatomic) NSArray *pointsArray;
 @property(atomic) int level;
 @property(atomic) int levelScore;
 @property(atomic) int totalScore;
@@ -24,6 +24,7 @@
 @property(atomic) int levelTimeLimit;
 @property(atomic) int secondsLeft;
 @property(atomic) int centisecondsLeft;
+@property(atomic) int livesLeft;
 
 -(void) startGame;
 -(void) restartGame;
