@@ -110,20 +110,26 @@
     self.centiseconds = self.gameBrain.centisecondsLeft;
     self.totalScore = self.gameBrain.totalScore + 1;
     
-    NSLog(@"Total calculated in view controller: %i", self.centiseconds + (100 * self.seconds));
+    NSLog(@"Total calculated in transitional view controller: %i", self.centiseconds + (100 * self.seconds));
     
+    if (self.gameBrain.gameState != lose) {
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.001 target:self selector:@selector(incrementTotalScoreAnimated) userInfo:nil repeats:YES];
     [self.timer setTolerance:0.05];
+    }
 }
 
 -(void) incrementTotalScoreAnimated
 {
-    // For every 1 centisecond left, add 1 to total score
+    // For every 1 centisecond left, add +1 to total score
     if (self.centiseconds == 0)
     {
         if (self.seconds == 0) {
             [self.timer invalidate];
             self.timer = nil;
+            [UIView animateWithDuration:0.5 animations:^{
+                [self.remainingTimeLabel setAlpha:0];
+                [self.totalScoreLabel setCenter:CGPointMake(CGRectGetMidX(self.totalScoreLabel.frame), CGRectGetMidY(self.totalScoreLabel.frame) - 25)];
+            }];
         }
         else
         {

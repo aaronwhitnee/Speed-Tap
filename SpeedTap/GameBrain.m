@@ -81,7 +81,7 @@
     self.totalScore += (self.centisecondsLeft + (self.secondsLeft * 100));
     NSLog(@"New total score: %i", self.totalScore);
     self.goalTapNum += 2;
-    self.levelTimeLimit += self.level / 3;
+    self.levelTimeLimit++;
     
     self.levelScore = 0;
     self.currentTapCount = 0;

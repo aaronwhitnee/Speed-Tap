@@ -25,6 +25,7 @@
 		0CD0E9B61A2112DA004979F5 /* heart.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD0E9B51A2112DA004979F5 /* heart.png */; };
 		3F46C9311A113A80009E0757 /* TransitionalScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F46C9301A113A80009E0757 /* TransitionalScreenViewController.m */; };
 		3F54B3D21A13E987002A2724 /* PauseGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F54B3D11A13E987002A2724 /* PauseGameViewController.m */; };
+		3FFB55D11A2CF3B200BAF014 /* GameOverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3FFB55D01A2CF3B200BAF014 /* GameOverViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,8 @@
 		3F46C9301A113A80009E0757 /* TransitionalScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionalScreenViewController.m; sourceTree = "<group>"; };
 		3F54B3D01A13E987002A2724 /* PauseGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseGameViewController.h; sourceTree = "<group>"; };
 		3F54B3D11A13E987002A2724 /* PauseGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseGameViewController.m; sourceTree = "<group>"; };
+		3FFB55CF1A2CF3B200BAF014 /* GameOverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverViewController.h; sourceTree = "<group>"; };
+		3FFB55D01A2CF3B200BAF014 /* GameOverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +125,8 @@
 				0C2D9EFF1A0C79850051ECE1 /* GameViewController.m */,
 				3F46C92F1A113A80009E0757 /* TransitionalScreenViewController.h */,
 				3F46C9301A113A80009E0757 /* TransitionalScreenViewController.m */,
+				3FFB55CF1A2CF3B200BAF014 /* GameOverViewController.h */,
+				3FFB55D01A2CF3B200BAF014 /* GameOverViewController.m */,
 				0C2D9F011A0C8D330051ECE1 /* GameInstructionsViewController.h */,
 				0C2D9F021A0C8D330051ECE1 /* GameInstructionsViewController.m */,
 				3F54B3D01A13E987002A2724 /* PauseGameViewController.h */,
@@ -278,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FFB55D11A2CF3B200BAF014 /* GameOverViewController.m in Sources */,
 				0C2D9EDB1A0C77820051ECE1 /* ViewController.m in Sources */,
 				0C2D9ED81A0C77820051ECE1 /* AppDelegate.m in Sources */,
 				0C2D9F031A0C8D330051ECE1 /* GameInstructionsViewController.m in Sources */,
@@ -412,7 +418,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SpeedTap/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -423,7 +429,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SpeedTap/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -442,7 +448,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = SpeedTapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpeedTap.app/SpeedTap";
@@ -458,7 +464,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = SpeedTapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SpeedTap.app/SpeedTap";

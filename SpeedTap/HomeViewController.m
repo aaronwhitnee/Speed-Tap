@@ -15,6 +15,7 @@
 
 @property(nonatomic) UIButton *startGameButton;
 @property(nonatomic) UIButton *howToPlayButton;
+@property(nonatomic) UILabel *homeTitle;
 
 @end
 
@@ -27,6 +28,17 @@
 
     // Set Home Screen Background Color
     [self.view setBackgroundColor:[UIColor colorWithRed:100.0/255.0 green:100.0/255.0 blue:100.0/255.0 alpha:1.0]];
+    
+    // Create home screen Game title
+    self.homeTitle = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, frame.size.width, 150)];
+    [self.homeTitle setCenter:CGPointMake(CGRectGetMidX(frame), 200)];
+    [self.homeTitle setTextAlignment:NSTextAlignmentCenter];
+    [self.homeTitle setFont:[UIFont fontWithName:@"Avenir-Book" size:50.0f]];
+    [self.homeTitle setTextColor:[UIColor whiteColor]];
+    //[self.homeTitle setAlpha:0.5];
+    [self.homeTitle setBackgroundColor:[UIColor clearColor]];
+    [self.homeTitle setText:@"SpeedTap"];
+    [self.view addSubview:self.homeTitle];
     
     // Create Start button
     self.startGameButton = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 200, 40)];

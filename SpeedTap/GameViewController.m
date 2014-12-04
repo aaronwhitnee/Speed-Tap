@@ -11,6 +11,7 @@
 #import "TransitionalScreenViewController.h"
 #import "PauseGameViewController.h"
 #import "FXBlurView.h"
+#import "GameOverViewController.h"
 
 @interface GameViewController () {
 }
@@ -25,6 +26,7 @@
 @property(nonatomic) UIView *lifeHeartsContainerView;
 @property(nonatomic) FXBlurView *blurredView;
 @property(nonatomic) TransitionalScreenViewController *tvc;
+@property(nonatomic) GameOverViewController *gvc;
 @property(nonatomic) PauseGameViewController *pgvc;
 
 -(void) generateRandomBackgroundColor;
@@ -76,7 +78,7 @@
     
     // Goal tap number
     self.goalTapLabel = [[UILabel alloc] initWithFrame: CGRectMake(0, 0, mainRect.size.width, 150)];
-    [self.goalTapLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(mainRect) + 250)];
+    [self.goalTapLabel setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMaxY(mainRect) - 90)];
     [self.goalTapLabel setTextAlignment:NSTextAlignmentCenter];
     [self.goalTapLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:30.0f]];
     [self.goalTapLabel setTextColor:[UIColor whiteColor]];
@@ -108,6 +110,8 @@
     [self.continueButton.titleLabel setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
 //    self.continueButton.layer.borderColor = [UIColor whiteColor].CGColor;
 //    self.continueButton.layer.borderWidth = 2.0f;
+    
+
     [self.continueButton addTarget:self action:@selector(didPressContinueButton:) forControlEvents:UIControlEventTouchUpInside];
     
     // Create Pause button (displayed on pause screen)
@@ -148,10 +152,25 @@
     // Prepare PauseGameViewController
     self.pgvc = [[PauseGameViewController alloc] init];
     
+    // Call function to draw hearts on screen
+    [self drawHearts];
+    
+    // Call myButtonPressed on button tap
+    [self.tapButton addTarget:self action:@selector(myButtonPressed:)
+            forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void) drawHearts
+{
+    CGRect mainRect = [[UIScreen mainScreen] applicationFrame];
+
+    if ([self.view.subviews containsObject:self.lifeHeartsContainerView])
+        [self.lifeHeartsContainerView removeFromSuperview];
+    
     // Create array of 3 lifeHearts, used to display 3 hearts on game screen as "lives"
     self.lifeHeartsContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 108.0, 30.0)];
     CGRect containerFrame = self.lifeHeartsContainerView.frame;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < self.gameBrain.livesLeft; i++)
     {
         UIImageView *heart = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"heart.png"]];
         [heart setAlpha:0.5];
@@ -162,10 +181,6 @@
     }
     [self.lifeHeartsContainerView setCenter:CGPointMake(CGRectGetMidX(mainRect), CGRectGetMidY(self.goalTapLabel.frame) + 40)];
     [self.view addSubview:self.lifeHeartsContainerView];
-    
-    // Call myButtonPressed on button tap
-    [self.tapButton addTarget:self action:@selector(myButtonPressed:)
-            forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void) resetGameView
@@ -221,8 +236,17 @@
     [self.timerLabel setText:[NSString stringWithFormat:(self.gameBrain.centisecondsLeft < 10 ? @"%i.0%i\"" : @"%i.%i\""),
                               self.gameBrain.secondsLeft, self.gameBrain.centisecondsLeft]];
     
-    if (self.gameBrain.gameState == win || self.gameBrain.gameState == lose)
+    if (self.gameBrain.gameState == win)
         [self presentTransitionalViewController];
+    if (self.gameBrain.gameState == lose) {
+        [self drawHearts];
+        if (self.gameBrain.livesLeft == 0) {
+            [self presentGameOverViewController];
+        }
+        else {
+            [self presentTransitionalViewController];
+        }
+    }
 }
 
 -(void) presentTransitionalViewController
@@ -250,6 +274,22 @@
     [self.view addSubview:self.tvc.view];
 }
 
+-(void) presentGameOverViewController
+{
+    NSLog(@"Game over!!!");
+    [self.continueButton setTitle: @"OK" forState:UIControlStateNormal];
+
+    [self.timer invalidate];
+    self.timer = nil;
+    [self.pauseButton removeFromSuperview];
+    [self.continueButton setCenter:CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2 + 100)];
+    
+    self.gvc = [[GameOverViewController alloc] init];
+    [self.gvc.view addSubview:self.continueButton];
+    [self.view addSubview:self.blurredView];
+    [self.view addSubview:self.gvc.view];
+}
+
 -(void) didPressContinueButton: (UIButton *) selector
 {
     NSLog(@"Pressed continue button!");
@@ -261,12 +301,17 @@
     }
     else if(self.gameBrain.gameState == lose) {
         [self.gameBrain retryCurrentLevel];
-        [self resetGameView];
         [self.tvc.view removeFromSuperview];
         [self.blurredView removeFromSuperview];
         if (self.gameBrain.livesLeft == 0) {
-            // present transitional view controller with Game Over
+            [self.pauseButton removeFromSuperview];
+            [self.timer invalidate];
+            self.timer = nil;
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.gameBrain restartGame];
+            return;
         }
+        [self resetGameView];
     }
     else if(self.gameBrain.gameState == waiting) {
         [self.gameBrain startGame];

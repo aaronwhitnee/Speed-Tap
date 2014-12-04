@@ -32,7 +32,7 @@
     [self.instructionsText setCenter:CGPointMake(frame.size.width / 2.0, frame.size.height / 2.0)];
     [self.instructionsText setFont:[UIFont systemFontOfSize:20]];
     [self.instructionsText setFont:[UIFont fontWithName:@"Avenir-Book" size:20.0f]];
-    [self.instructionsText setText:@"Tap on the button as fast as you can before time runs out. You must reach the required number of taps before proceeding to the next level."];
+    [self.instructionsText setText:@"Tap on the button as fast as you can before time runs out. You must reach the required number of taps before proceeding to the next level. The faster you tap, the higher your score.\n\nBut be careful - you only have 3 lives! Lose a level, lose a life."];
     [self.view addSubview: self.instructionsText];
     
     // Create Back button
